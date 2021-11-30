@@ -9,6 +9,7 @@ import Nav from "components/Nav";
 export default function AppRouter({ isLoggedIn, userObj }) {
   return (
     <BrowserRouter>
+      <p>로그인 유저: {userObj ? userObj.email : ""}</p>
       <Nav isLoggedIn={isLoggedIn} />
       <Routes>
         {isLoggedIn ? (

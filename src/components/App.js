@@ -15,6 +15,7 @@ function App() {
       if (user) {
         setIsLoggedIn(user);
         //console.log("uid =>", user.uid); // test@comstudy.com : vAFlhWtsJqObk9bBVXDFKtW2BMd2
+        //console.log(user.email);
         setUserObj(user);
       } else {
         setIsLoggedIn(false);

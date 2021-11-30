@@ -1,5 +1,6 @@
 import { authService, dbService, storageService } from "fbase";
 import { useEffect, useState } from "react";
+import Message from "./Message";
 
 function Home({ userObj }) {
   const [msg, setMsg] = useState("");
@@ -38,6 +39,7 @@ function Home({ userObj }) {
       text: msg,
       createdAt: Date.now(),
       creatorId: userObj.uid,
+      creatorEmail: userObj.email,
     };
     await dbService.collection("messages").add(newData);
     setMsg("");
@@ -66,7 +68,7 @@ function Home({ userObj }) {
         <h4>메세지 목록</h4>
         <ul>
           {msgs.map((msg) => {
-            return <li key={msg.id}>{msg.text}</li>;
+            return <Message key={msg.id} msg={msg} userObj={userObj}></Message>;
           })}
         </ul>
       </div>
