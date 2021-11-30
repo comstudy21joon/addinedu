@@ -2,12 +2,15 @@ import { authService, firebaseInstance } from "fbase";
 import { useState } from "react";
 
 export default function Auth() {
+  // ES6 구조 분해
+  // state의 속성이 된다. - state속성이 변경 되면 콤포넌트의 랜더링이 자동으로 된다.
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const onChange = function (event) {
-    // event.tartget 구조분해
+    // ES6 구조분해
+    // event.tartget
     const {
       target: { name, value },
     } = event;
@@ -56,6 +59,7 @@ export default function Auth() {
     const data = await authService.signInWithPopup(provider);
     console.log(data);
   };
+
   return (
     <div>
       <h3>Auth page</h3>

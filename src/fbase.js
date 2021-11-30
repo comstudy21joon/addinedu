@@ -16,7 +16,6 @@ const firebaseConfig = {
 
 // export default를 사용하면 하나의 모듈만 넘겨준다.
 //export default firebase.initializeApp(firebaseConfig);
-
 firebase.initializeApp(firebaseConfig);
 
 export const authService = firebase.auth();

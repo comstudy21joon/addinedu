@@ -6,11 +6,16 @@ import { authService, dbService, storageService } from "fbase";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(authService.currentUser);
+  // 사용자 정보 저장
+  const [userObj, setUserObj] = useState(null);
+
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      console.log(user);
+      //console.log(user);
       if (user) {
         setIsLoggedIn(user);
+        //console.log("uid =>", user.uid); // test@comstudy.com : vAFlhWtsJqObk9bBVXDFKtW2BMd2
+        setUserObj(user);
       } else {
         setIsLoggedIn(false);
       }
@@ -19,7 +24,7 @@ function App() {
   return (
     <div>
       <h1>안부 묻기</h1>
-      <AppRouter isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
     </div>
   );
 }
