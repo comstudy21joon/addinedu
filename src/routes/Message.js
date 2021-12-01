@@ -1,4 +1,4 @@
-import { dbService } from "fbase";
+import { dbService, storageService } from "fbase";
 import { useState } from "react";
 
 export default function Message({ msg, userObj }) {
@@ -9,8 +9,13 @@ export default function Message({ msg, userObj }) {
     console.log("home objId =>", objId);
     // 삭제하기 구현...
     //const data = await dbService.collection("messages").doc(objId).delete();
-    const data = await dbService.doc(`messages/${objId}`).delete();
-    console.log(data);
+    // fireStore에서 데이터 삭제
+    await dbService.doc(`messages/${objId}`).delete();
+    // storage에서 파일 삭제
+    if (msg.imgUrl !== "") {
+      // refFromURL() <-- downloadURL을 이용해서 삭제
+      await storageService.refFromURL(msg.imgUrl).delete();
+    }
   }
 
   return (
@@ -21,7 +26,7 @@ export default function Message({ msg, userObj }) {
             type="text"
             value={newMsg}
             onChange={function (event) {
-              setEditing(event.target.value);
+              setNewMsg(event.target.value);
             }}
           />
         ) : (
@@ -29,12 +34,20 @@ export default function Message({ msg, userObj }) {
             {msg.text}({msg.creatorEmail})
           </>
         )}
+        {
+          // 목록에 사진 보여지는 부분
+          msg.imgUrl && <img src={msg.imgUrl} width="120" />
+        }
       </span>
       {userObj.uid === msg.creatorId ? (
         <>
           <button
             onClick={function (event) {
-              console.log("수정기능 >>>", msg.id);
+              setEditing(!editing);
+              if (editing) {
+                // newMsg를 db에 반영하기
+                dbService.doc(`messages/${msg.id}`).update({ text: newMsg });
+              }
             }}
           >
             {editing ? "수정완료" : "수정"}
